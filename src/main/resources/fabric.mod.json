@@ -1,0 +1,43 @@
+{
+	"schemaVersion": 1,
+	"id": "rscd",
+	"version": "${version}",
+	"name": "${name}",
+	"description": "Revert the villager curing discount system to before MC-181190 fix",
+	"contact": {
+		"email": "me@NoEul.dev",
+		"homepage": "https://modrinth.com/mod/rscd",
+		"issues": "https://github.com/No-Eul/rscd/issues",
+		"sources": "https://github.com/No-Eul/rscd"
+	},
+	"authors": [
+		{
+			"name": "NoEul",
+			"contact": {
+				"email": "me@NoEul.dev",
+				"homepage": "https://NoEul.dev",
+				"sources": "https://github.com/No-Eul"
+			}
+		}
+	],
+	"contributors": [],
+	"license": "MIT",
+	"icon": "assets/rscd/icon.png",
+	"environment": "*",
+	"entrypoints": {},
+	"mixins": [
+		"rscd.mixins.json"
+	],
+	"depends": {
+		"minecraft": ">1.20.1",
+		"fabricloader": ">=${loader_version}"
+	},
+	"recommends": {
+		"modmenu": "*"
+	},
+	"custom": {
+		"modmenu": {
+			"update_checker": true
+		}
+	}
+}
