@@ -1,6 +1,6 @@
 plugins {
 	id("java")
-	id("fabric-loom") version "latest.release"
+	id("net.fabricmc.fabric-loom") version "1.15.5"
 	id("maven-publish")
 }
 
@@ -17,12 +17,11 @@ repositories {
 
 dependencies {
 	minecraft("com.mojang:minecraft:${property("minecraft_version")}")
-	mappings("net.fabricmc:yarn:${property("yarn_mappings")}:v2")
-	modImplementation("net.fabricmc:fabric-loader:${property("loader_version")}")
+	implementation("net.fabricmc:fabric-loader:${property("loader_version")}")
 
 //	modImplementation("com.terraformersmc:modmenu:${property("mod_menu_version")}")
 
-	modRuntimeOnly("maven.modrinth:mixintrace:1.1.1+1.17")
+	runtimeOnly("maven.modrinth:mixintrace:1.1.1+1.17")
 //	modRuntimeOnly("maven.modrinth:notenoughcrashes:4.4.5+1.20.1-fabric")
 //	modRuntimeOnly("maven.modrinth:language-reload:1.5.8+1.20.1")
 //	modRuntimeOnly("maven.modrinth:smoothboot-fabric:1.19.4-1.7.0")
@@ -37,11 +36,6 @@ loom {
 		it.resources.files
 			.find { file -> file.name.endsWith(".accesswidener") }
 			?.let(accessWidenerPath::set)
-	}
-
-	@Suppress("UnstableApiUsage")
-	mixin {
-		defaultRefmapName.set("${property("mod_id")}.refmap.json")
 	}
 
 	runs {
@@ -93,35 +87,6 @@ tasks {
 		archiveBaseName.set("${project.property("archive_base_name")}")
 		archiveAppendix.set("fabric")
 		archiveVersion.set("${project.version}+mc${project.property("minecraft_version")}")
-	}
-
-	remapJar {
-		archiveBaseName.set("${project.property("archive_base_name")}")
-		archiveAppendix.set("fabric")
-		archiveVersion.set("${project.version}+mc${project.property("minecraft_version")}")
-	}
-}
-
-afterEvaluate {
-	loom.runs.configureEach {
-		vmArgs(
-			"-Dfabric.systemLibraries=${System.getProperty("java.home")}/lib/hotswap/hotswap-agent.jar",
-			"-Dfabric.development=true",
-			"-Dfabric.fabric.debug.deobfuscateWithClasspath",
-			"-Dmixin.debug.export=true",
-			"-Dmixin.debug.verify=true",
-//			"-Dmixin.debug.strict=true",
-			"-Dmixin.debug.countInjections=true",
-			"-Dmixin.hotSwap=true",
-			"-XX:+AllowEnhancedClassRedefinition",
-			"-XX:HotswapAgent=fatjar",
-			"-XX:+IgnoreUnrecognizedVMOptions",
-			"-javaagent:${
-				configurations.compileClasspath.get()
-					.files { it.group == "net.fabricmc" && it.name == "sponge-mixin" }
-					.first()
-			}"
-		)
 	}
 }
 
